@@ -1,0 +1,48 @@
+{
+    "family": "api-apl",
+    "taskRoleArn": "arn:aws:iam::<account-id>:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::<account-id>:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "containerDefinitions": [
+        {
+            "name": "api-endpoint",
+            "image": "<account-id>.dkr.ecr.ap-northeast-1.amazonaws.com/sample-grpc/api-service:latest",
+            "portMappings": [
+                {
+                    "containerPort": 50051,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [
+            ],
+            "ulimits": [
+                {
+                    "name": "msgqueue",
+                    "softLimit": 0,
+                    "hardLimit": 0
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": true,
+                    "awslogs-group": "/ecs/sample-api",
+                    "awslogs-region": "ap-northeast-1",
+                    "awslogs-stream-prefix": "api-service"
+                }
+            }
+        }
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "memory": "512",
+    "cpu": "256",
+    "tags": [
+        {
+            "key": "Name",
+            "value": "api-service"
+        }
+    ]
+}
